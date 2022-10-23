@@ -5,7 +5,7 @@ calc_add() {
   echo $((n1+n2))
 }
 
-test_add1() {
+test_add() {
   local result
   result=$(calc_add 1 2)
   [[ "$result" -eq 3 ]]

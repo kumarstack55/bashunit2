@@ -137,13 +137,17 @@ _bashunit2_run_self_tests() {
   _bashunit2_err "All tests were successfully completed."
 }
 
-_bashunit2_assert_eq() {
-  local e="$1" a="$2"
-  if [[ "$e" != "$a" ]]; then
-    _bashunit2_err "expected: '$e', actual: '$a'"
-    return 1
-  fi
-  return 0
+_bashunit2_define_functions() {
+  # The functions defined here are experimental implementations and
+  # are subject to change in the future.
+  assert_eq() {
+    local e="$1" a="$2"
+    if [[ "$e" != "$a" ]]; then
+      _bashunit2_err "expected: '$e', actual: '$a'"
+      return 1
+    fi
+    return 0
+  }
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then

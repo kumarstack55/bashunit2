@@ -155,5 +155,5 @@ _bashunit2_define_functions() {
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  _bashunit2_run_self_tests
+  _bashunit2_run_self_tests "$@"
 fi

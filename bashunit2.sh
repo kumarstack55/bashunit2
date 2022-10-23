@@ -53,6 +53,7 @@ _bashunit2_run_tests() {
 }
 
 bashunit2_run_tests() {
+  _bashunit2_tests=()
   _bashunit2_discover_tests
   _bashunit2_run_tests
 }

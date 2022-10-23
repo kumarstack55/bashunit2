@@ -2,6 +2,8 @@
 
 bashunit2 is a framework for TAP compliant testing.
 
+![GitHub Actions](https://github.com/kumarstack55/bashunit2/actions/workflows/ci.yml/badge.svg)
+
 ## Features
 
 * You can include your test codes in your library.
@@ -9,7 +11,7 @@ bashunit2 is a framework for TAP compliant testing.
 
 ## Requirements
 
-* Bash 5.0+
+* Bash 4.4+
 
 ## Quickstart
 
@@ -134,7 +136,8 @@ $ ./calc.sh 1 2
 
 ## TODO
 
-* CI
+* Add assert_*()
+* Add document for mock
 
 ## Similar projects
 

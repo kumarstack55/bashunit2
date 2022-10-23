@@ -124,8 +124,12 @@ _bashunit2_run_self_tests() {
 
   while read -r f; do
     _bashunit2_err "$f()"
+
+    # The function may exit. To continue testing even if exit is executed,
+    # run the test in a child process.
     ( $f )
     st=$?
+
     _bashunit2_err "exit status: $st"
     if [ $st -ne 0 ]; then
       ok=

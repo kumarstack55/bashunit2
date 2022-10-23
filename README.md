@@ -9,7 +9,7 @@ bashunit2 is a framework for TAP compliant testing.
 
 ## Requirements
 
-* Bash
+* Bash 5.0+
 
 ## Quickstart
 
@@ -19,13 +19,13 @@ Write the test first. Let's name the file `libcalc.sh`.
 #!/bin/bash
 
 calc_add() {
-  : # TODO: implement here
+  : # TODO: Implement here
 }
 
-test_add1() {
-  local result
-  result=$(calc_add 1 2)
-  [[ "$result" -eq 3 ]]
+test_add() {
+  local expected=3 actual
+  actual=$(calc_add 1 2)
+  [[ "$expected" == "$actual" ]]
 }
 ```
 
@@ -38,10 +38,10 @@ calc_add() {
   : # TODO: Implement here
 }
 
-test_add1() {
-  local result
-  result=$(calc_add 1 2)
-  [[ "$result" -eq 3 ]]
+test_add() {
+  local expected=3 actual
+  actual=$(calc_add 1 2)
+  [[ "$expected" == "$actual" ]]
 }
 
 run_tests() {
@@ -50,7 +50,7 @@ run_tests() {
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  run_tests
+  run_tests "$@"
 fi
 ```
 
@@ -60,7 +60,7 @@ Run the test to make sure it fails.
 $ ./libcalc.sh
 TAP version 14
 1..1
-not ok - test_add1
+not ok - test_add
 ```
 
 Write an implementation of the function `calc_add()`.
@@ -73,10 +73,10 @@ calc_add() {
   echo $((n1+n2))
 }
 
-test_add1() {
-  local result
-  result=$(calc_add 1 2)
-  [[ "$result" -eq 3 ]]
+test_add() {
+  local expected=3 actual
+  actual=$(calc_add 1 2)
+  [[ "$expected" == "$actual" ]]
 }
 
 run_tests() {
@@ -85,7 +85,7 @@ run_tests() {
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  run_tests
+  run_tests "$@"
 fi
 ```
 
@@ -95,7 +95,7 @@ Run the test again to verify that the test passes.
 $ ./libcalc.sh
 TAP version 14
 1..1
-ok - test_add1
+ok - test_add
 ```
 
 You can run the test in another way.
@@ -105,7 +105,7 @@ $ source libcalc.sh
 $ run_tests
 TAP version 14
 1..1
-ok - test_add1
+ok - test_add
 ```
 
 Once you have sufficiently tested the library, you can implement your

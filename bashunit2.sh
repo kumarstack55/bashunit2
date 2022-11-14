@@ -55,6 +55,10 @@ bashunit2::_run_tests() {
 bashunit2::run_tests() {
   _bashunit2_tests=()
   bashunit2::_discover_tests
+  if [[ ${#_bashunit2_tests[@]} -eq 0 ]]; then
+    bashunit2::_err "Could not find any tests."
+    return 1
+  fi
   bashunit2::_run_tests
 }
 
@@ -111,6 +115,21 @@ TAP version 14
 not ok - test_exits_non_zero
 __EXPECTED__
 
+  actual=$(bashunit2::run_tests "$@")
+
+  # shellcheck disable=SC2181
+  [ $? -ne 0 ] || return 1
+
+  diff -u <(echo "$expected") <(echo "$actual")
+}
+
+bashunit2::_self_test_run_tests_fails_when_no_tests_found() {
+  local expected actual
+
+  read -r -d '' expected <<__EXPECTED__
+__EXPECTED__
+
+  # TODO: capture stderr
   actual=$(bashunit2::run_tests "$@")
 
   # shellcheck disable=SC2181

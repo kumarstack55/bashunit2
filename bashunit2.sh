@@ -2,40 +2,40 @@
 
 declare -a _bashunit2_tests
 
-_bashunit2_err() { echo "${1:-}" >&2; }
+bashunit2::_err() { echo "${1:-}" >&2; }
 
-_bashunit2_die() {
-  _bashunit2_err "${1:-Died} at ${BASH_SOURCE[1]} line ${BASH_LINENO[0]}."
+bashunit2::_die() {
+  bashunit2::_err "${1:-Died} at ${BASH_SOURCE[1]} line ${BASH_LINENO[0]}."
   exit 1
 }
 
-_bashunit2_print_functions() {
+bashunit2::_print_functions() {
   local _ f
   while read -r _ _ f; do echo "$f"; done < <(declare -F)
 }
 
-_bashunit2_print_tests() {
+bashunit2::_print_tests() {
   local f
   while read -r f; do
     if [[ $f =~ ^test_ ]]; then echo "$f"; fi
-  done < <(_bashunit2_print_functions)
+  done < <(bashunit2::_print_functions)
 }
 
-_bashunit2_print_self_tests() {
+bashunit2::_print_self_tests() {
   local f
   while read -r f; do
-    if [[ $f =~ ^_bashunit2_self_test_ ]]; then echo "$f"; fi
-  done < <(_bashunit2_print_functions)
+    if [[ $f =~ ^bashunit2::_self_test_ ]]; then echo "$f"; fi
+  done < <(bashunit2::_print_functions)
 }
 
-_bashunit2_discover_tests() {
+bashunit2::_discover_tests() {
   local f
   while read -r f; do
     _bashunit2_tests+=("$f")
-  done < <(_bashunit2_print_tests)
+  done < <(bashunit2::_print_tests)
 }
 
-_bashunit2_run_tests() {
+bashunit2::_run_tests() {
   echo "TAP version 14"
   echo "1..${#_bashunit2_tests[@]}"
 
@@ -52,13 +52,13 @@ _bashunit2_run_tests() {
   [ "$ok" ]
 }
 
-bashunit2_run_tests() {
+bashunit2::run_tests() {
   _bashunit2_tests=()
-  _bashunit2_discover_tests
-  _bashunit2_run_tests
+  bashunit2::_discover_tests
+  bashunit2::_run_tests
 }
 
-_bashunit2_self_test_run_tests_continues_when_test_exits_with_zero() {
+bashunit2::_self_test_run_tests_continues_when_test_exits_with_zero() {
   local expected actual
 
   test_1_returns_zero() { return 0; }
@@ -73,7 +73,7 @@ ok - test_2_exits_zero
 ok - test_3_returns_zero
 __EXPECTED__
 
-  actual=$(bashunit2_run_tests "$@")
+  actual=$(bashunit2::run_tests "$@")
 
   # shellcheck disable=SC2181
   [ $? -eq 0 ] || return 1
@@ -81,7 +81,7 @@ __EXPECTED__
   diff -u <(echo "$expected") <(echo "$actual")
 }
 
-_bashunit2_self_test_run_tests_fails_when_test_returns_non_zero() {
+bashunit2::_self_test_run_tests_fails_when_test_returns_non_zero() {
   local expected actual
 
   test_returns_zero() { return 1; }
@@ -92,7 +92,7 @@ TAP version 14
 not ok - test_returns_zero
 __EXPECTED__
 
-  actual=$(bashunit2_run_tests "$@")
+  actual=$(bashunit2::run_tests "$@")
 
   # shellcheck disable=SC2181
   [ $? -ne 0 ] || return 1
@@ -100,7 +100,7 @@ __EXPECTED__
   diff -u <(echo "$expected") <(echo "$actual")
 }
 
-_bashunit2_self_test_run_tests_fails_when_test_exits_with_non_zero() {
+bashunit2::_self_test_run_tests_fails_when_test_exits_with_non_zero() {
   local expected actual
 
   test_exits_non_zero() { exit 1; }
@@ -111,7 +111,7 @@ TAP version 14
 not ok - test_exits_non_zero
 __EXPECTED__
 
-  actual=$(bashunit2_run_tests "$@")
+  actual=$(bashunit2::run_tests "$@")
 
   # shellcheck disable=SC2181
   [ $? -ne 0 ] || return 1
@@ -119,41 +119,47 @@ __EXPECTED__
   diff -u <(echo "$expected") <(echo "$actual")
 }
 
-_bashunit2_run_self_tests() {
+bashunit2::_run_self_tests() {
   local ok=y _ f st
 
   while read -r f; do
-    _bashunit2_err "$f()"
+    bashunit2::_err "$f()"
 
     # The function may exit. To continue testing even if exit is executed,
     # run the test in a child process.
     ( $f )
     st=$?
 
-    _bashunit2_err "exit status: $st"
+    bashunit2::_err "exit status: $st"
     if [ $st -ne 0 ]; then
       ok=
     fi
-    _bashunit2_err
-  done < <(_bashunit2_print_self_tests)
+    bashunit2::_err
+  done < <(bashunit2::_print_self_tests)
 
-  [ "$ok" ] || _bashunit2_die "Tests failed."
-  _bashunit2_err "All tests were successfully completed."
+  [ "$ok" ] || bashunit2::_die "Tests failed."
+  bashunit2::_err "All tests were successfully completed."
 }
 
-_bashunit2_define_functions() {
+bashunit2::_define_functions() {
   # The functions defined here are experimental implementations and
   # are subject to change in the future.
   assert_eq() {
     local e="$1" a="$2"
     if [[ "$e" != "$a" ]]; then
-      _bashunit2_err "expected: '$e', actual: '$a'"
+      bashunit2::_err "expected: '$e', actual: '$a'"
       return 1
     fi
     return 0
   }
 }
 
+# TODO: This function exists for backward compatibility.
+bashunit2_run_tests() {
+  bashunit2::_err '[DEPRECATED] This function will be removed in the future.'
+  bashunit2::run_tests
+}
+
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  _bashunit2_run_self_tests "$@"
+  bashunit2::_run_self_tests "$@"
 fi

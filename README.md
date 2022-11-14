@@ -48,7 +48,7 @@ test_add() {
 
 run_tests() {
   source "./bashunit2.sh"
-  bashunit2_run_tests "$@"
+  bashunit2::run_tests "$@"
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
@@ -83,7 +83,7 @@ test_add() {
 
 run_tests() {
   source "./bashunit2.sh"
-  bashunit2_run_tests "$@"
+  bashunit2::run_tests "$@"
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then

@@ -1,13 +1,13 @@
 #!/bin/bash
 
-calc_add() {
+calc::add() {
   local n1="$1" n2="$2"
   echo $((n1+n2))
 }
 
-test_add() {
+calc::test_add() {
   local result
-  result=$(calc_add 1 2)
+  result=$(calc::add 1 2)
   [[ "$result" -eq 3 ]]
 }
 
@@ -22,5 +22,6 @@ run_tests() {
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  # TODO: Limit the scope of the test.
   run_tests "$@"
 fi

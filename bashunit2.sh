@@ -17,7 +17,7 @@ bashunit2::_print_functions() {
 bashunit2::_print_tests() {
   local f
   while read -r f; do
-    if [[ $f =~ ^test_ ]]; then echo "$f"; fi
+    if [[ $f =~ ^test_ || $f =~ ::test_ ]]; then echo "$f"; fi
   done < <(bashunit2::_print_functions)
 }
 

@@ -2,7 +2,7 @@
 
 declare -a _bashunit2_tests
 
-bashunit2::_err() { echo "${1:-}" >&2; }
+bashunit2::_err() { echo "bashunit2: ${1:-}" >&2; }
 
 bashunit2::_die() {
   bashunit2::_err "${1:-Died} at ${BASH_SOURCE[1]} line ${BASH_LINENO[0]}."

@@ -165,17 +165,13 @@ bashunit2::_run_self_tests() {
   bashunit2::_err "All tests were successfully completed."
 }
 
-bashunit2::_define_functions() {
-  # The functions defined here are experimental implementations and
-  # are subject to change in the future.
-  assert_eq() {
-    local e="$1" a="$2"
-    if [[ "$e" != "$a" ]]; then
-      bashunit2::_err "expected: '$e', actual: '$a'"
-      return 1
-    fi
-    return 0
-  }
+bashunit2::assert_eq_str() {
+  local e="$1" a="$2"
+  if [[ "$e" != "$a" ]]; then
+    bashunit2::_err "expected: '$e', actual: '$a'"
+    return 1
+  fi
+  return 0
 }
 
 # TODO: This function exists for backward compatibility.

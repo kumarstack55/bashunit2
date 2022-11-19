@@ -30,9 +30,18 @@ bashunit2::_print_self_tests() {
 
 bashunit2::_discover_tests() {
   local f
+
+  _bashunit2_tests=()
   while read -r f; do
     _bashunit2_tests+=("$f")
   done < <(bashunit2::_print_tests)
+
+  if [[ ${#_bashunit2_tests[@]} -eq 0 ]]; then
+    bashunit2::_err "Could not find any tests."
+    return 1
+  fi
+
+  return 0
 }
 
 bashunit2::_run_tests() {
@@ -53,13 +62,7 @@ bashunit2::_run_tests() {
 }
 
 bashunit2::run_tests() {
-  _bashunit2_tests=()
-  bashunit2::_discover_tests
-  if [[ ${#_bashunit2_tests[@]} -eq 0 ]]; then
-    bashunit2::_err "Could not find any tests."
-    return 1
-  fi
-  bashunit2::_run_tests
+  bashunit2::_discover_tests && bashunit2::_run_tests
 }
 
 bashunit2::_self_test_run_tests_continues_when_test_exits_with_zero() {

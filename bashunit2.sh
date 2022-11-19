@@ -205,7 +205,8 @@ bashunit2::assert_eq_str() {
   return 0
 }
 
-# TODO: This function exists for backward compatibility.
+# TODO: Remove deprecated function.
+# This function exists for backward compatibility.
 bashunit2_run_tests() {
   bashunit2::_err '[DEPRECATED] This function will be removed in the future.'
   bashunit2::run_tests

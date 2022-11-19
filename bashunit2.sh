@@ -1,6 +1,7 @@
 #!/bin/bash
 
 declare -a _bashunit2_tests
+declare _bashunit2_test_function_filter=''
 
 bashunit2::_err() { echo "bashunit2: ${1:-}" >&2; }
 
@@ -21,6 +22,13 @@ bashunit2::_print_tests() {
   done < <(bashunit2::_print_functions)
 }
 
+bashunit2::_print_filtered_tests() {
+  local f
+  while read -r f; do
+    if [[ $f =~ $_bashunit2_test_function_filter ]]; then echo "$f"; fi
+  done < <(bashunit2::_print_tests)
+}
+
 bashunit2::_print_self_tests() {
   local f
   while read -r f; do
@@ -34,7 +42,7 @@ bashunit2::_discover_tests() {
   _bashunit2_tests=()
   while read -r f; do
     _bashunit2_tests+=("$f")
-  done < <(bashunit2::_print_tests)
+  done < <(bashunit2::_print_filtered_tests)
 
   if [[ ${#_bashunit2_tests[@]} -eq 0 ]]; then
     bashunit2::_err "Could not find any tests."
@@ -63,7 +71,30 @@ bashunit2::_run_tests() {
   [ "$ok" ]
 }
 
+bashunit2::usage() {
+  while read -r line; do
+    echo "$line" >&2
+  done <<__USAGE__
+Usage: bashunit2::run_tests [OPTION]...
+
+  -f PATTERN    Filter by regular expression PATTERN for the function name
+                to be tested.
+  -h            display this help and exit.
+__USAGE__
+}
+
 bashunit2::run_tests() {
+  local opt
+
+  while getopts f:h opt; do
+    case "$opt" in
+      f) _bashunit2_test_function_filter="$OPTARG";;
+      h) bashunit2::usage; return 1;;
+      *) bashunit2::usage; return 1;;
+    esac
+  done
+  shift $((OPTIND-1))
+
   bashunit2::_discover_tests && bashunit2::_run_tests
 }
 

@@ -50,6 +50,8 @@ bashunit2::_run_tests() {
 
   local ok=y t
   for t in "${_bashunit2_tests[@]}"; do
+    # The test function may execute exit.
+    # We execute the command in a sub-process to continue processing.
     if ( $t ); then
       echo "ok - $t"
     else

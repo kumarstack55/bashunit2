@@ -56,7 +56,7 @@ file.
 ```
 
 This code can be executed in two ways: first, it can be executed as
-`. /libcalc.sh`. The second is as follows: `source . /libcalc.sh`.
+`./libcalc.sh`. The second is as follows: `source ./libcalc.sh`.
 
 Either way, the `script_dir` variable will be assigned to the directory
 where `libcalc.sh` is located.
@@ -231,7 +231,7 @@ $ ./libcalc.sh
 <!-- include path="../demo/calc/07/output.txt" -->
 ```
 
-`. /libcalc.sh: illegal option -- x` is probably what getopts output to
+`./libcalc.sh: illegal option -- x` is probably what getopts output to
 stderr.
 
 ### Capture standard output, standard error output, and exit status
@@ -283,7 +283,7 @@ libcalc.sh in the same directory is loaded.
 
 Then `calc::app` is executed.
 
-Now, let's run `. /calc.sh 1 2` is executed.
+Now, let's run `./calc.sh 1 2` is executed.
 
 ```console
 $ ./calc.sh 1 2

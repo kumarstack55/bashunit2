@@ -35,13 +35,6 @@ bashunit2::_print_filtered_tests() {
   done < <(bashunit2::_print_tests)
 }
 
-bashunit2::_print_self_tests() {
-  local f
-  while read -r f; do
-    if [[ $f =~ ^bashunit2::_self_test_ ]]; then echo "$f"; fi
-  done < <(bashunit2::_print_functions)
-}
-
 bashunit2::_discover_tests() {
   local f
 
@@ -102,104 +95,6 @@ bashunit2::run_tests() {
   shift $((OPTIND-1))
 
   bashunit2::_discover_tests && bashunit2::_run_tests
-}
-
-bashunit2::_self_test_run_tests_continues_when_test_exits_with_zero() {
-  local expected actual
-
-  test_1_returns_zero() { return 0; }
-  test_2_exits_zero() { exit 0; }
-  test_3_returns_zero() { return 0; }
-
-  read -r -d '' expected <<__EXPECTED__
-TAP version 14
-1..3
-ok - test_1_returns_zero
-ok - test_2_exits_zero
-ok - test_3_returns_zero
-__EXPECTED__
-
-  actual=$(bashunit2::run_tests "$@")
-
-  # shellcheck disable=SC2181
-  [ $? -eq 0 ] || return 1
-
-  diff -u <(echo "$expected") <(echo "$actual")
-}
-
-bashunit2::_self_test_run_tests_fails_when_test_returns_non_zero() {
-  local expected actual
-
-  test_returns_zero() { return 1; }
-
-  read -r -d '' expected <<__EXPECTED__
-TAP version 14
-1..1
-not ok - test_returns_zero
-__EXPECTED__
-
-  actual=$(bashunit2::run_tests "$@")
-
-  # shellcheck disable=SC2181
-  [ $? -ne 0 ] || return 1
-
-  diff -u <(echo "$expected") <(echo "$actual")
-}
-
-bashunit2::_self_test_run_tests_fails_when_test_exits_with_non_zero() {
-  local expected actual
-
-  test_exits_non_zero() { exit 1; }
-
-  read -r -d '' expected <<__EXPECTED__
-TAP version 14
-1..1
-not ok - test_exits_non_zero
-__EXPECTED__
-
-  actual=$(bashunit2::run_tests "$@")
-
-  # shellcheck disable=SC2181
-  [ $? -ne 0 ] || return 1
-
-  diff -u <(echo "$expected") <(echo "$actual")
-}
-
-bashunit2::_self_test_run_tests_fails_when_no_tests_found() {
-  local expected actual
-
-  read -r -d '' expected <<__EXPECTED__
-__EXPECTED__
-
-  # TODO: capture stderr
-  actual=$(bashunit2::run_tests "$@")
-
-  # shellcheck disable=SC2181
-  [ $? -ne 0 ] || return 1
-
-  diff -u <(echo "$expected") <(echo "$actual")
-}
-
-bashunit2::_run_self_tests() {
-  local ok=y _ f st
-
-  while read -r f; do
-    bashunit2::_err "$f()"
-
-    # The function may exit. To continue testing even if exit is executed,
-    # run the test in a child process.
-    ( $f )
-    st=$?
-
-    bashunit2::_err "exit status: $st"
-    if [ $st -ne 0 ]; then
-      ok=
-    fi
-    bashunit2::_err
-  done < <(bashunit2::_print_self_tests)
-
-  [ "$ok" ] || bashunit2::_die "Tests failed."
-  bashunit2::_err "All tests were successfully completed."
 }
 
 bashunit2::assert_eq_str() {

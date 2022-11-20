@@ -6,8 +6,9 @@ bashunit2 is a framework for TAP compliant testing.
 
 ## Features
 
-* You can include your test codes in your library.
+* This is pure Bash code. There is no framework-specific syntax.
 * There is only one file that you need to depend on for testing: `bashunit2.sh`.
+* You can include your test codes in your library.
 
 ## Requirements
 

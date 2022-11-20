@@ -15,7 +15,16 @@ bashunit2 is a framework for TAP compliant testing.
 
 ## Quickstart
 
-Write the test first. Let's name the file `libcalc.sh`.
+### Implement your first test function
+
+In this introduction, we will implement a library that does the calculations.
+Let's name the file `libcalc.sh`.
+
+As a calculation, implement a function that performs addition.
+Name the function `calc_add`.
+The function to test that function is called `test_calc_add`.
+
+Let's write the test first.
 
 ```bash
 #!/bin/bash
@@ -33,7 +42,11 @@ test_add() {
 }
 ```
 
-libcalc.sh is a library that performs calculations.
+In the test function, run calc_add and if it is as expected, the test function
+returns exit status 0.
+
+### Ensure that tests are run when the library is executed
+
 Let's add to this library the ability to do additions and to execute additions
 from the shell.
 
@@ -70,14 +83,17 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 fi
 ```
 
-This example assumes that bashunit2.sh and libcalc.sh are in the same
+This example assumes that `bashunit2.sh` and `libcalc.sh` are in the same
 directory.
-However, bashunit2.sh can be located anywhere.
+However, `bashunit2.sh` can be located anywhere.
 It can be in a subdirectory of your project or in a directory higher than the
-libcalc.sh file.
-If it is in a different location, change the contents of the script_dir
+`libcalc.sh` file.
+If it is in a different location, change the contents of the `script_dir`
 variable appropriately.
 
+### Run the test and confirm that it fails
+
+You can run the test in your shell by running . /libcalc.sh to run the test.
 Run the test to make sure it fails.
 
 ```console
@@ -86,6 +102,8 @@ TAP version 14
 1..1
 not ok - test_add
 ```
+
+### Optional: Rename the function
 
 We could see that the test would fail.
 Let's make sure the test succeeds with proper implementation.
@@ -138,7 +156,9 @@ fi
 Of course, renaming functions in libcalc.sh is not required.
 Implement your library any way you like.
 
-Write an implementation of the function `calc_add()`.
+### Implement the code and run tests
+
+Write an implementation of the function `calc::add()`.
 
 ```bash
 #!/bin/bash
@@ -184,6 +204,8 @@ ok - test_add
 Congratulations!
 You've implemented calc::add and it passes all your tests!
 
+### Another way to run the test
+
 By the way, you can test in another way as follows:
 
 ```console
@@ -194,14 +216,17 @@ TAP version 14
 ok - test_add
 ```
 
+### Implement the application
+
 Next, let's add another function to the library.
 
 Add a function that parses arguments and performs calculations so that users
 can perform calculations from the shell.
 
-We write the test as we did for the implementation of the calc::add() function.
+We write the test as we did for the implementation of the `calc::add()`
+function.
 
-We decide on calc::app as the function name to implement.
+We decide on `calc::app` as the function name to implement.
 When `calc::app -h` is executed, it outputs the usage.
 When an integer is specified, such as `calc::app 2 3`, it performs addition of
 the specified values.

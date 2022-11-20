@@ -17,7 +17,7 @@ parse_infile() {
 
   re='<!--[[:space:]]+include[[:space:]]+path=\"([^\"]+)\"[[:space:]]+-->'
 
-  while IFS='' read -r line || [ -n "$line" ]; do
+  while IFS='' read -r line; do
     if [[ $line =~ $re ]]; then
       path="${BASH_REMATCH[1]}"
       while IFS='' read -r line2; do

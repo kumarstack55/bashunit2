@@ -219,5 +219,5 @@ bashunit2_run_tests() {
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  bashunit2::_run_self_tests "$@"
+  bashunit2::run_tests "$@"
 fi

@@ -47,7 +47,9 @@ calc::test_multiply_positive_and_negative_values() {
 }
 
 calc::_print_app_usage() {
-  cat <<__USAGE__
+  while IFS='' read -r line; do
+    echo "$line"
+  done <<__USAGE__
 Usage:
   $ calc.sh [options...] value1 value2
 

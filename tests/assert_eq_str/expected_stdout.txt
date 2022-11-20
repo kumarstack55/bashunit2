@@ -1,0 +1,4 @@
+TAP version 14
+1..2
+not ok - mypackage::test_assert_eq_str_not_ok
+ok - mypackage::test_assert_eq_str_ok

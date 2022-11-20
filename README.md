@@ -37,14 +37,14 @@ file.
 ```bash
 #!/bin/bash
 
-add() {
+calc_add() {
   : # TODO: implement here
 }
 
-test_add() {
+test_calc_add() {
   local result
 
-  result=$(add 1 2)
+  result=$(calc_add 1 2)
 
   [[ "$result" -eq 3 ]]
 }
@@ -66,14 +66,14 @@ file.
 ```bash
 #!/bin/bash
 
-add() {
+calc_add() {
   : # TODO: implement here
 }
 
-test_add() {
+test_calc_add() {
   local result
 
-  result=$(add 1 2)
+  result=$(calc_add 1 2)
 
   [[ "$result" -eq 3 ]]
 }
@@ -257,7 +257,7 @@ you may prefer this method.
 ### Implement the application 1
 
 We have implemented `calc::add`.
-Let's define a new function that calls calc::add so we can perform addition
+Let's define a new function that calls `calc::add` so we can perform addition
 from the shell. Let us name the function `calc::app`.
 
 Let us assume that the function has the following main functions:
@@ -676,7 +676,7 @@ The script_dir variable is assigned to the calc.sh directory.
 
 libcalc.sh in the same directory is loaded.
 
-Then calc::app is executed.
+Then `calc::app` is executed.
 
 Now, let's run `. /calc.sh 1 2` is executed.
 

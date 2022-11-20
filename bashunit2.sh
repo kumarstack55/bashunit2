@@ -77,7 +77,7 @@ bashunit2::_run_tests() {
   [ "$ok" ]
 }
 
-bashunit2::usage() {
+bashunit2::_usage() {
   while read -r line; do
     echo "$line" >&2
   done <<__USAGE__
@@ -95,8 +95,8 @@ bashunit2::run_tests() {
   while getopts f:h opt; do
     case "$opt" in
       f) _bashunit2_test_function_filter="$OPTARG";;
-      h) bashunit2::usage; return 1;;
-      *) bashunit2::usage; return 1;;
+      h) bashunit2::_usage; return 1;;
+      *) bashunit2::_usage; return 1;;
     esac
   done
   shift $((OPTIND-1))

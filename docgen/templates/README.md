@@ -18,19 +18,7 @@ bashunit2 is a framework for TAP compliant testing.
 Write the test first. Let's name the file `libcalc.sh`.
 
 ```bash
-#!/bin/bash
-
-add() {
-  : # TODO: implement here
-}
-
-test_add() {
-  local result
-
-  result=$(add 1 2)
-
-  [[ "$result" -eq 3 ]]
-}
+<!-- include path="../demo/calc/01/libcalc.sh" -->
 ```
 
 libcalc.sh is a library that performs calculations.
@@ -40,34 +28,7 @@ from the shell.
 Add some codes so that tests can be run.
 
 ```bash
-#!/bin/bash
-
-add() {
-  : # TODO: implement here
-}
-
-test_add() {
-  local result
-
-  result=$(add 1 2)
-
-  [[ "$result" -eq 3 ]]
-}
-
-run_tests() {
-  local script_dir
-
-  script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
-
-  # shellcheck source=./bashunit2.sh
-  source "$script_dir/bashunit2.sh"
-
-  bashunit2::run_tests "$@"
-}
-
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  run_tests "$@"
-fi
+<!-- include path="../demo/calc/02/libcalc.sh" -->
 ```
 
 This example assumes that bashunit2.sh and libcalc.sh are in the same
@@ -82,9 +43,7 @@ Run the test to make sure it fails.
 
 ```console
 $ ./libcalc.sh
-TAP version 14
-1..1
-not ok - test_add
+<!-- include path="../demo/calc/02/output.txt" -->
 ```
 
 We could see that the test would fail.
@@ -105,34 +64,7 @@ For this introduction, let's change the function name of libcalc.sh as well,
 as follows:
 
 ```bash
-#!/bin/bash
-
-calc::add() {
-  : # TODO: implement here
-}
-
-calc::test_add() {
-  local result
-
-  result=$(calc::add 1 2)
-
-  [[ "$result" -eq 3 ]]
-}
-
-calc::run_tests() {
-  local script_dir
-
-  script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
-
-  # shellcheck source=./bashunit2.sh
-  source "$script_dir/bashunit2.sh"
-
-  bashunit2::run_tests "$@"
-}
-
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  calc::run_tests "$@"
-fi
+<!-- include path="../demo/calc/03/libcalc.sh" -->
 ```
 
 Of course, renaming functions in libcalc.sh is not required.
@@ -141,35 +73,7 @@ Implement your library any way you like.
 Write an implementation of the function `calc_add()`.
 
 ```bash
-#!/bin/bash
-
-calc::add() {
-  local n1="$1" n2="$2"
-  echo $((n1+n2))
-}
-
-calc::test_add() {
-  local result
-
-  result=$(calc::add 1 2)
-
-  [[ "$result" -eq 3 ]]
-}
-
-calc::run_tests() {
-  local script_dir
-
-  script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
-
-  # shellcheck source=./bashunit2.sh
-  source "$script_dir/bashunit2.sh"
-
-  bashunit2::run_tests "$@"
-}
-
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  calc::run_tests "$@"
-fi
+<!-- include path="../demo/calc/04/libcalc.sh" -->
 ```
 
 Run the test again to verify that the test passes.
@@ -207,59 +111,7 @@ When an integer is specified, such as `calc::app 2 3`, it performs addition of
 the specified values.
 
 ```bash
-#!/bin/bash
-
-calc::add() {
-  local n1="$1" n2="$2"
-  echo $((n1+n2))
-}
-
-calc::test_add() {
-  local result
-
-  result=$(calc::add 1 2)
-
-  [[ "$result" -eq 3 ]]
-}
-
-calc::app() {
-  : # TODO: implement here
-}
-
-calc::test_app_prints_usage() {
-  local result
-
-  result=$(calc::app -h)
-
-  # shellcheck disable=SC2181
-  [[ $? -eq 1 ]] || exit 1
-  [[ "$result" =~ 'Usage:' ]] || exit 1
-}
-
-calc::test_app_add() {
-  local result
-
-  result=$(calc::app 1 2)
-
-  # shellcheck disable=SC2181
-  [[ $? -eq 0 ]] || exit 1
-  [[ "$result" == 3 ]] || exit 1
-}
-
-calc::run_tests() {
-  local script_dir
-
-  script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
-
-  # shellcheck source=./bashunit2.sh
-  source "$script_dir/bashunit2.sh"
-
-  bashunit2::run_tests "$@"
-}
-
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  calc::run_tests "$@"
-fi
+<!-- include path="../demo/calc/05/libcalc.sh" -->
 ```
 
 TODO

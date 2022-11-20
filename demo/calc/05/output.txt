@@ -1,0 +1,7 @@
+TAP version 14
+1..5
+ok - calc::test_add
+not ok - calc::test_app_caluculate_add
+not ok - calc::test_app_prints_usage_when_h_option_exists
+not ok - calc::test_app_prints_usage_when_number_of_arguments_is_not_two
+not ok - calc::test_app_prints_usage_when_unknown_option_exists

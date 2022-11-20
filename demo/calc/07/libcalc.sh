@@ -20,13 +20,27 @@ calc::test_add() {
 }
 
 calc::_print_app_usage() {
-  : # TODO: implement here
+  while IFS='' read -r line; do
+    echo "$line"
+  done <<__USAGE__
+Usage:
+  $ calc.sh [options...] value1 value2
+
+Options:
+  -h      print this message
+
+Examples:
+  Outputs the answer 1 + 2.
+    $ ./calc.sh 1 2
+__USAGE__
+
+  exit 1
 }
 
 calc::app() {
   local opt
 
-  while getopts AMh opt; do
+  while getopts h opt; do
     case $opt in
       h) calc::_print_app_usage;;
       *) calc::_print_app_usage;;
@@ -60,16 +74,6 @@ calc::test_app_prints_usage_when_unknown_option_exists() {
   [[ "$result" =~ 'Usage:' ]] || calc::_die
 }
 
-calc::test_app_prints_usage_when_number_of_arguments_is_not_two() {
-  local result
-
-  result=$(calc::app 10 20 30)
-
-  # shellcheck disable=SC2181
-  [[ $? -eq 1 ]] || calc::_die
-  [[ "$result" =~ 'Usage:' ]] || calc::_die
-}
-
 calc::test_app_caluculate_add() {
   local result
 
@@ -78,6 +82,16 @@ calc::test_app_caluculate_add() {
   # shellcheck disable=SC2181
   [[ $? -eq 0 ]] || calc::_die
   [[ "$result" == 3 ]] || calc::_die
+}
+
+calc::test_app_prints_usage_when_number_of_arguments_is_not_two() {
+  local result
+
+  result=$(calc::app 10 20 30)
+
+  # shellcheck disable=SC2181
+  [[ $? -eq 1 ]] || calc::_die
+  [[ "$result" =~ 'Usage:' ]] || calc::_die
 }
 
 calc::run_tests() {

@@ -1,0 +1,11 @@
+TAP version 14
+1..5
+ok - calc::test_add
+Died at ./libcalc.sh line 53.
+not ok - calc::test_app_caluculate_add
+Died at ./libcalc.sh line 32.
+not ok - calc::test_app_prints_usage_when_h_option_exists
+Died at ./libcalc.sh line 62.
+not ok - calc::test_app_prints_usage_when_number_of_arguments_is_not_two
+Died at ./libcalc.sh line 42.
+not ok - calc::test_app_prints_usage_when_unknown_option_exists

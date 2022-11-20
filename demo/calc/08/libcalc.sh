@@ -65,13 +65,26 @@ calc::test_app_prints_usage_when_h_option_exists() {
 }
 
 calc::test_app_prints_usage_when_unknown_option_exists() {
+  local exit_status stdout stderr
+
+  bashunit2::run calc::app -x
+  exit_status=$(bashunit2::print_run_last_exit_status)
+  stdout=$(bashunit2::print_run_last_stdout)
+  stderr=$(bashunit2::print_run_last_stderr)
+
+  [[ $exit_status -eq 1 ]] || calc::_die
+  [[ "$stdout" =~ 'Usage:' ]] || calc::_die
+  [[ "$stderr" =~ 'illegal option' ]] || calc::_die
+}
+
+calc::test_app_caluculate_add() {
   local result
 
-  result=$(calc::app -x)
+  result=$(calc::app 1 2)
 
   # shellcheck disable=SC2181
-  [[ $? -eq 1 ]] || calc::_die
-  [[ "$result" =~ 'Usage:' ]] || calc::_die
+  [[ $? -eq 0 ]] || calc::_die
+  [[ "$result" == 3 ]] || calc::_die
 }
 
 calc::test_app_prints_usage_when_number_of_arguments_is_not_two() {
@@ -84,15 +97,6 @@ calc::test_app_prints_usage_when_number_of_arguments_is_not_two() {
   [[ "$result" =~ 'Usage:' ]] || calc::_die
 }
 
-calc::test_app_caluculate_add() {
-  local result
-
-  result=$(calc::app 1 2)
-
-  # shellcheck disable=SC2181
-  [[ $? -eq 0 ]] || calc::_die
-  [[ "$result" == 3 ]] || calc::_die
-}
 calc::run_tests() {
   local script_dir
 

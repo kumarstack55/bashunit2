@@ -1,0 +1,3 @@
+TAP version 14
+1..1
+ok - calc::test_add

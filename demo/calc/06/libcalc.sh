@@ -23,7 +23,7 @@ calc::app() {
   : # TODO: implement here
 }
 
-calc::test_app_prints_usage() {
+calc::test_app_prints_usage_when_h_option_exists() {
   local result
 
   result=$(calc::app -h)
@@ -33,7 +33,17 @@ calc::test_app_prints_usage() {
   [[ "$result" =~ 'Usage:' ]] || calc::_die
 }
 
-calc::test_app_add() {
+calc::test_app_prints_usage_when_unknown_option_exists() {
+  local result
+
+  result=$(calc::app -x)
+
+  # shellcheck disable=SC2181
+  [[ $? -eq 1 ]] || calc::_die
+  [[ "$result" =~ 'Usage:' ]] || calc::_die
+}
+
+calc::test_app_caluculate_add() {
   local result
 
   result=$(calc::app 1 2)
@@ -41,6 +51,16 @@ calc::test_app_add() {
   # shellcheck disable=SC2181
   [[ $? -eq 0 ]] || calc::_die
   [[ "$result" == 3 ]] || calc::_die
+}
+
+calc::test_app_prints_usage_when_number_of_arguments_is_not_two() {
+  local result
+
+  result=$(calc::app 10 20 30)
+
+  # shellcheck disable=SC2181
+  [[ $? -eq 1 ]] || calc::_die
+  [[ "$result" =~ 'Usage:' ]] || calc::_die
 }
 
 calc::run_tests() {

@@ -1,7 +1,10 @@
 #!/bin/bash
 
 declare -a _bashunit2_tests
-declare _bashunit2_test_function_filter=''
+declare _bashunit2_test_function_filter=
+declare _bashunit2_run_last_exit_status=
+declare _bashunit2_run_last_stdout=
+declare _bashunit2_run_last_stderr=
 
 bashunit2::_err() {
   echo "bashunit2: ${1:-}" >&2
@@ -95,6 +98,50 @@ bashunit2::run_tests() {
   shift $((OPTIND-1))
 
   bashunit2::_discover_tests && bashunit2::_run_tests
+}
+
+bashunit2::print_run_last_exit_status() {
+  echo "$_bashunit2_run_last_exit_status"
+}
+
+bashunit2::print_run_last_stdout() {
+  echo -n "$_bashunit2_run_last_stdout"
+}
+
+bashunit2::print_run_last_stderr() {
+  echo -n "$_bashunit2_run_last_stderr"
+}
+
+bashunit2::run() {
+  # Assign stderr, stdout, and exit status to variables without creating
+  # temporary files.
+  # https://stackoverflow.com/questions/13806626/
+  # shellcheck disable=SC1090
+  . <(
+    {
+      _bashunit2_stderr=$(
+        {
+          # shellcheck disable=SC2030
+          _bashunit2_stdout=$( "$@" )
+          # shellcheck disable=SC2030
+          _bashunit2_exit_status=$?
+        } 2>&1
+        declare -p _bashunit2_stdout _bashunit2_exit_status >&2
+      )
+      declare -p _bashunit2_stderr
+    } 2>&1
+  )
+
+  # Ignore shellcheck warnings.
+  # shellcheck disable=SC2031
+  : "${_bashunit2_exit_status:=}" "${_bashunit2_stdout:=}" \
+    "${_bashunit2_stderr:=}"
+
+  _bashunit2_run_last_exit_status="$_bashunit2_exit_status"
+  _bashunit2_run_last_stdout="$_bashunit2_stdout"
+  _bashunit2_run_last_stderr="$_bashunit2_stderr"
+
+  return 0
 }
 
 bashunit2::assert_eq_str() {

@@ -95,7 +95,7 @@ fi
 ```
 
 This code can be executed in two ways: first, it can be executed as
-`. /libcalc.sh`. The second is as follows: `source . /libcalc.sh`.
+`./libcalc.sh`. The second is as follows: `source ./libcalc.sh`.
 
 Either way, the `script_dir` variable will be assigned to the directory
 where `libcalc.sh` is located.
@@ -613,7 +613,7 @@ ok - calc::test_app_prints_usage_when_number_of_arguments_is_not_two
 ok - calc::test_app_prints_usage_when_unknown_option_exists
 ```
 
-`. /libcalc.sh: illegal option -- x` is probably what getopts output to
+`./libcalc.sh: illegal option -- x` is probably what getopts output to
 stderr.
 
 ### Capture standard output, standard error output, and exit status
@@ -678,7 +678,7 @@ libcalc.sh in the same directory is loaded.
 
 Then `calc::app` is executed.
 
-Now, let's run `. /calc.sh 1 2` is executed.
+Now, let's run `./calc.sh 1 2` is executed.
 
 ```console
 $ ./calc.sh 1 2

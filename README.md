@@ -7,7 +7,7 @@ bashunit2 is a framework for TAP compliant testing.
 ## Features
 
 * You can include your test codes in your library.
-* There is only one file that you need to depend on for testing: bashunit2.sh.
+* There is only one file that you need to depend on for testing: `bashunit2.sh`.
 
 ## Requirements
 
@@ -103,23 +103,29 @@ TAP version 14
 not ok - test_add
 ```
 
+bashunit2 outputs test results in TAP,
+[Test Anything Protocol](https://testanything.org/) format.
+This output indicates that there is only one type of test, from 1 to 1.
+It also indicates that the test result failed.
+
 ### Optional: Rename the function
 
 We could see that the test would fail.
 Let's make sure the test succeeds with proper implementation.
 
-By the way, bashunit2 uses Google's Shell Style Guide for function naming
-conventions.
-Tests are run by executing bashunit2::run_tests.
+By the way, bashunit2 uses Google's
+[Shell Style Guide](https://google.github.io/styleguide/shellguide.html)
+for function naming conventions.
+Tests are run by executing `bashunit2::run_tests`.
 
-bashunit2::run_tests means that the Shell Style Guide executes the function
-run_tests in the bashunit2 library.
+`bashunit2::run_tests` means that the Shell Style Guide executes the function
+`run_tests` in the bashunit2 library.
 
 bashunit2 automatically discovers functions to test.
 It determines that a function is a test function if its name begins with
 `test_` or contains `::test_`.
 
-For this introduction, let's change the function name of libcalc.sh as well,
+For this introduction, let's change the function name of `libcalc.sh` as well,
 as follows:
 
 ```bash
@@ -158,7 +164,7 @@ Implement your library any way you like.
 
 ### Implement the code and run tests
 
-Write an implementation of the function `calc::add()`.
+Let's write an implementation of the function `calc::add()`.
 
 ```bash
 #!/bin/bash
@@ -202,7 +208,7 @@ ok - test_add
 ```
 
 Congratulations!
-You've implemented calc::add and it passes all your tests!
+You've implemented `calc::add` and it passes all your tests!
 
 ### Another way to run the test
 

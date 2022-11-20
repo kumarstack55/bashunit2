@@ -3,7 +3,9 @@
 declare -a _bashunit2_tests
 declare _bashunit2_test_function_filter=''
 
-bashunit2::_err() { echo "bashunit2: ${1:-}" >&2; }
+bashunit2::_err() {
+  echo "bashunit2: ${1:-}" >&2
+}
 
 bashunit2::_die() {
   bashunit2::_err "${1:-Died} at ${BASH_SOURCE[1]} line ${BASH_LINENO[0]}."
@@ -18,14 +20,18 @@ bashunit2::_print_functions() {
 bashunit2::_print_tests() {
   local f
   while read -r f; do
-    if [[ $f =~ ^test_ || $f =~ ::test_ ]]; then echo "$f"; fi
+    if [[ $f =~ ^test_ || $f =~ ::test_ ]]; then
+      echo "$f"
+    fi
   done < <(bashunit2::_print_functions)
 }
 
 bashunit2::_print_filtered_tests() {
   local f
   while read -r f; do
-    if [[ $f =~ $_bashunit2_test_function_filter ]]; then echo "$f"; fi
+    if [[ $f =~ $_bashunit2_test_function_filter ]]; then
+      echo "$f"
+    fi
   done < <(bashunit2::_print_tests)
 }
 

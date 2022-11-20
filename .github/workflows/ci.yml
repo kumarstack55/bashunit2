@@ -15,8 +15,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-      - name: Run a self test
+      - name: Run a self tests
         run: |
           set -x
           bash --version
-          ./bashunit2.sh
+          ./tests/run_self_tests.sh

@@ -71,7 +71,7 @@ bashunit2::_run_tests() {
 }
 
 bashunit2::_usage() {
-  while read -r line; do
+  while IFS='' read -r line; do
     echo "$line" >&2
   done <<__USAGE__
 Usage: bashunit2::run_tests [OPTION]...

@@ -80,6 +80,7 @@ run_unittests() {
   local d ok=y
 
   while read -r d; do
+    echo "$d"
     pushd "$d" >/dev/null || exit 1
     cleanup
     if ! ( run_unittest ); then

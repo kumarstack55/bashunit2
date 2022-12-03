@@ -1,10 +1,12 @@
 #!/bin/bash
 
-declare -a _bashunit2_tests
-declare _bashunit2_test_function_filter=
-declare _bashunit2_run_last_exit_status=
-declare _bashunit2_run_last_stdout=
-declare _bashunit2_run_last_stderr=
+# The naming convention for global variable prefixes in bashunit2 is:
+# "underscore + package name + two underscores".
+declare -a _bashunit2__tests
+declare _bashunit2__test_function_filter=
+declare _bashunit2__run_last_exit_status=
+declare _bashunit2__run_last_stdout=
+declare _bashunit2__run_last_stderr=
 
 bashunit2::_err() {
   echo "bashunit2: ${1:-}" >&2
@@ -32,7 +34,7 @@ bashunit2::_print_tests() {
 bashunit2::_print_filtered_tests() {
   local f
   while read -r f; do
-    if [[ $f =~ $_bashunit2_test_function_filter ]]; then
+    if [[ $f =~ $_bashunit2__test_function_filter ]]; then
       echo "$f"
     fi
   done < <(bashunit2::_print_tests)
@@ -41,12 +43,12 @@ bashunit2::_print_filtered_tests() {
 bashunit2::_discover_tests() {
   local f
 
-  _bashunit2_tests=()
+  _bashunit2__tests=()
   while read -r f; do
-    _bashunit2_tests+=("$f")
+    _bashunit2__tests+=("$f")
   done < <(bashunit2::_print_filtered_tests)
 
-  if [[ ${#_bashunit2_tests[@]} -eq 0 ]]; then
+  if [[ ${#_bashunit2__tests[@]} -eq 0 ]]; then
     bashunit2::_err "Could not find any tests."
     return 1
   fi
@@ -56,10 +58,10 @@ bashunit2::_discover_tests() {
 
 bashunit2::_run_tests() {
   echo "TAP version 14"
-  echo "1..${#_bashunit2_tests[@]}"
+  echo "1..${#_bashunit2__tests[@]}"
 
   local ok=y t
-  for t in "${_bashunit2_tests[@]}"; do
+  for t in "${_bashunit2__tests[@]}"; do
     # The test function may execute exit.
     # We execute the command in a sub-process to continue processing.
     if ( $t ); then
@@ -90,7 +92,7 @@ bashunit2::run_tests() {
 
   while getopts f:h opt; do
     case "$opt" in
-      f) _bashunit2_test_function_filter="$OPTARG";;
+      f) _bashunit2__test_function_filter="$OPTARG";;
       h) bashunit2::_usage; return 1;;
       *) bashunit2::_usage; return 1;;
     esac
@@ -101,15 +103,15 @@ bashunit2::run_tests() {
 }
 
 bashunit2::print_run_last_exit_status() {
-  echo "$_bashunit2_run_last_exit_status"
+  echo "$_bashunit2__run_last_exit_status"
 }
 
 bashunit2::print_run_last_stdout() {
-  echo -n "$_bashunit2_run_last_stdout"
+  echo -n "$_bashunit2__run_last_stdout"
 }
 
 bashunit2::print_run_last_stderr() {
-  echo -n "$_bashunit2_run_last_stderr"
+  echo -n "$_bashunit2__run_last_stderr"
 }
 
 bashunit2::run() {
@@ -137,9 +139,9 @@ bashunit2::run() {
   : "${_bashunit2_exit_status:=}" "${_bashunit2_stdout:=}" \
     "${_bashunit2_stderr:=}"
 
-  _bashunit2_run_last_exit_status="$_bashunit2_exit_status"
-  _bashunit2_run_last_stdout="$_bashunit2_stdout"
-  _bashunit2_run_last_stderr="$_bashunit2_stderr"
+  _bashunit2__run_last_exit_status="$_bashunit2_exit_status"
+  _bashunit2__run_last_stdout="$_bashunit2_stdout"
+  _bashunit2__run_last_stderr="$_bashunit2_stderr"
 
   return 0
 }
